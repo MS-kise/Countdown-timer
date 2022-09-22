@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Countdown-Timer</title>
+    <style>
+        body {
+            font-family: 'Lato', sans-serif;
+            color: black;
+            background-color: khaki;
+        }
+        h1 {
+            font-size: 60px;
+            margin: 0px;
+            padding: 0px;
+        }
+        h3 {
+            margin: 0px;
+            padding: 0px;
+            color: #999;
+        }
+
+        div.wrap {
+            width: 500px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            vertical-align: middle;
+        }
+
+        div.wrap div {
+            position: relative;
+            margin: 50px 0;
+        }
+
+        label {
+            position: absolute;
+            top: 0;
+            font-size: 30px;
+            margin: 10px;
+            padding: 0 10px;
+            background-color: black;
+            -webkit-transition: top .2s ease-in-out,
+            font-size .2s ease-in-out;
+            transition: top .2s ease-in-out,
+            font-size .2s ease-in-out;
+        }
+
+        .active {
+            top: -25px;
+            font-size: 20px;
+        }
+
+        input[type=text] {
+            width: 10%;
+            padding: 20px;
+            border: 1px solid black;
+            font-size: 20px;
+            background-color: khaki;
+            color: black;
+        }
+
+        input[type=text]:focus {
+            outline: none;
+        }
+
+        input[type=button]{
+            width: 10%;
+            padding: 20px;
+            font-size: 15px;
+            background-color: white;
+            color: black;
+        }
+    </style>
+    <script>
+        var i = 0;
+        var timer1; //タイマーを格納する変数（タイマーID）の宣言
+        // カウントダウン関数を1000ミリ秒毎に呼び出す関数
+        function cntStart() {
+                document.timer.elements[0].disabled = true;
+                timer1 = setInterval("countDown()", 1000);
+            }
+
+            //タイマー停止関数
+            function cntStop() {
+                document.timer.elements[0].disabled = false;
+                clearInterval(timer1);
+            }
+
+
+            //カウントダウン関数
+            function countDown() {
+                var min = document.timer.elements[3 * i + 3].value;
+                var sec = document.timer.elements[3 * i + 4].value;
+
+                if ((min == "") && (sec == "")) {
+                    alert("時刻を設定してください！");
+                    allreSet();
+                }else if ((min < 0)||(sec < 0)) {
+                    alert("時刻を設定し直してください！");
+                    allreSet();
+                } else {
+                    if (min == "") min = 0;
+                    min = parseInt(min);
+
+                    if (sec == "") sec = 0;
+                    sec = parseInt(sec);
+
+                    tmWrite(min * 60 + sec - 1);
+                }
+            }
+
+            //残り時間を書き出す関数
+            function tmWrite(int) {
+                int = parseInt(int);
+
+                if (int <= 0) {
+                    var n = new Notification("タスク：" + document.timer.elements[3 * i + 2].value + "時間です");
+                    reSet();
+                } else {
+                    //残り分数はintを60で割って切り捨てる
+                    document.timer.elements[3 * i + 3].value = Math.floor(int / 60);
+                    //残り秒数はintを60で割った余り
+                    document.timer.elements[3 * i + 4].value = int % 60;
+                }
+            }
+
+            //フォームを初期状態に戻す（リセット）関数
+            function reSet() {
+                document.timer.elements[3 * i + 3].value = "0";
+                document.timer.elements[3 * i + 4].value = "0";
+                document.timer.elements[0].disabled = false;
+                clearInterval(timer1);
+                i++;
+                cntStart();
+            }
+
+        function allreSet() {
+            i=0;
+            document.timer.elements[3 * i + 3].value = "0";
+            document.timer.elements[3 * i + 4].value = "0";
+            document.timer.elements[0].disabled = false;
+            clearInterval(timer1);
+        }
+
+
+
+    </script>
+</head>
+<body>
+<form name="timer">
+    <font size="7">
+    <em>Countdown Timer</em><br>
+    </font>
+    <br><br>
+    <em>一番左の列にタスクの名前、真ん中の列に「分」、右の列に「秒」を設定してください。<br>
+    startでカウントダウン開始、stopで一時停止します。<br>
+    リセットはページ更新で行ってください。<br>
+    </em>
+    <br><br>
+    <div style="text-align: center;">
+    <font size="6">
+
+        <input type="button" style="font-size:30px" value="start" onclick="cntStart(),
+        getValue('lab1'),getValue('lab2'),getValue('lab3'),getValue('lab4'),getValue('lab5'),
+        getValue('lab6'),getValue('lab7'),getValue('lab8'),getValue('lab9'),getValue('lab10')">
+        <input type="button" style="font-size:30px"value="stop" onclick="cntStop()"><br><br>
+        Task1 <input type="text" id="lab1" value="">
+        <input type="text" value="">min
+        <input type="text" value="">sec<br><br>
+        Task2 <input type="text" id="lab2" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task3 <input type="text" id="lab3" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task4 <input type="text" id="lab4" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task5 <input type="text" id="lab5" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task6 <input type="text" id="lab6" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task7 <input type="text" id="lab7" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task8 <input type="text" id="lab8" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task9 <input type="text" id="lab9" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+        Task10 <input type="text" id="lab10" value="">
+        <input type="text" size="5" value="">min
+        <input type="text" size="5" value="">sec<br><br>
+
+
+    </font>
+    </div>
+</form>
+</body>
+</html>
